@@ -1,91 +1,359 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>獵人執照試驗場</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            hunter: {
-              bg: '#0a0d14',
-              card: '#141a29',
-              border: '#2a3650',
-              accent: '#ffcc00',
-              neon: '#00ffcc',
-              red: '#ff2a5f',
-              purple: '#a855f7'
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <title>獵人試驗：微觀細胞探索</title>
   <style>
+    :root {
+      --primary-color: #2b5876;
+      --secondary-color: #4e4376;
+      --accent-color: #e67e22;
+      --success-color: #27ae60;
+      --error-color: #e74c3c;
+      --bg-color: #f4f7f6;
+      --card-bg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', "Microsoft JhengHei", sans-serif;
+    }
+
     body {
-      background-color: #0a0d14;
-      color: #f3f4f6;
-      background-image: 
-        radial-gradient(circle at 15% 20%, rgba(0, 255, 204, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(255, 204, 0, 0.08) 0%, transparent 40%);
-      background-attachment: fixed;
-      min-height: 100vh;
+      background-color: var(--bg-color);
+      color: #333;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      min-height: 100vh;
       padding: 20px;
     }
-    .hunter-title-glow {
-      text-shadow: 0 0 15px rgba(255, 204, 0, 0.6), 0 0 30px rgba(255, 204, 0, 0.2);
+
+    .container {
+      background: var(--card-bg);
+      max-width: 650px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      position: relative;
     }
-    .card-hunter-style {
-      background: linear-gradient(135deg, #182232 0%, #0d131f 100%);
-      border: 2px solid #3b4d6c;
-      box-shadow: 0 0 25px rgba(0, 255, 204, 0.15);
+
+    h1, h2, h3 {
+      text-align: center;
+      color: var(--secondary-color);
+      margin-bottom: 20px;
     }
-    .btn-hunter {
-      background: linear-gradient(90deg, #ffcc00 0%, #ff9900 100%);
-      color: #000;
-      font-weight: 900;
+
+    .progress-bar {
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      margin-bottom: 25px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .stage-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .question {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .option-btn {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
       transition: all 0.2s ease;
     }
-    .btn-hunter:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+
+    .option-btn:hover {
+      background: #eef2f5;
+      border-color: #cbd5e1;
     }
-    .nen-aura-active {
-      animation: nenAuraPulse 2s infinite alternate;
+
+    .feedback {
+      display: none;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
-    @keyframes nenAuraPulse {
-      0% { box-shadow: 0 0 10px rgba(0, 255, 204, 0.4); }
-      100% { box-shadow: 0 0 25px rgba(0, 255, 204, 0.8); }
+
+    .feedback.error {
+      background-color: #fde8e8;
+      color: var(--error-color);
+      border-left: 5px solid var(--error-color);
+    }
+
+    .feedback.success {
+      background-color: #eafaf1;
+      color: var(--success-color);
+      border-left: 5px solid var(--success-color);
+    }
+
+    .action-btn {
+      display: none;
+      width: 100%;
+      padding: 12px;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .action-btn:hover {
+      background: var(--secondary-color);
+    }
+
+    /* 獵人執照/證書樣式 */
+    .hunter-license {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border: 2px solid #d4af37;
+      position: relative;
+    }
+
+    .license-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+    }
+
+    .license-title {
+      color: #f1c40f;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .skill-list {
+      list-style: none;
+      margin: 15px 0;
+    }
+
+    .skill-list li {
+      margin-bottom: 8px;
+      padding-left: 20px;
+      position: relative;
+      font-size: 0.95rem;
+    }
+
+    .skill-list li::before {
+      content: "★";
+      position: absolute;
+      left: 0;
+      color: #f1c40f;
     }
   </style>
 </head>
 <body>
-  <div class="card-hunter-style p-8 rounded-2xl max-w-md w-full text-center border-hunter-border">
-    <h1 class="text-3xl font-black text-hunter-accent mb-2 hunter-title-glow tracking-widest">HUNTER EXAM</h1>
-    <p class="text-gray-400 text-sm mb-6">第 287 期獵人試驗修煉場</p>
-    
-    <div class="bg-[#0a0d14] p-5 rounded-xl border border-gray-800 mb-6 nen-aura-active">
-      <div class="text-gray-400 text-xs mb-1">念能力修煉值 (REN)</div>
-      <div id="power-display" class="text-4xl font-black text-hunter-neon tracking-wider">100</div>
-    </div>
 
-    <button onclick="train()" class="btn-hunter w-full py-4 rounded-xl text-lg mb-3 cursor-pointer">
-      ⚡ 釋放念能力修煉
-    </button>
+<div class="container" id="game-container">
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress"></div>
   </div>
 
-  <script>
-    let power = 100;
-    function train() {
-      power += 50;
-      document.getElementById('power-display').innerText = power;
+  <div id="quiz-section">
+    <div class="stage-title" id="stage-title">關卡載入中...</div>
+    <div class="question" id="question-text"></div>
+    <div class="options" id="options-container"></div>
+    <div class="feedback" id="feedback-box"></div>
+    <button class="action-btn" id="next-btn" onclick="nextStage()">進入下一階段</button>
+  </div>
+
+  <!-- 獵人證書區塊 (預設隱藏) -->
+  <div id="license-section" style="display: none;">
+    <div class="hunter-license">
+      <div class="license-header">
+        <span>HUNTER ASSOCIATION</span>
+        <span>NO. 287-MICROSCOPE</span>
+      </div>
+      <h2 class="license-title">二星微觀生物獵人證</h2>
+      <p>恭喜考生突破重重觀察考驗，成功掌握複式顯微鏡之真髓！</p>
+      <ul class="skill-list" id="skills-acquired">
+        <!-- 通關技能動態填入 -->
+      </ul>
+      <p style="text-align: right; font-size: 0.8rem; opacity: 0.8;">認證機構：獵人試驗生物檢定組</p>
+    </div>
+    <button class="action-btn" style="display: block; margin-top: 20px;" onclick="restartGame()">重新挑戰</button>
+  </div>
+</div>
+
+<script>
+  // 關卡題目、選項、正確答案、提示與解鎖技能設定
+  const stages = [
+    {
+      title: "第一關：製作玻片標本",
+      question: "準備製作口腔皮膜細胞玻片時，下列哪一項操作步驟是正確的？",
+      options: [
+        { text: "A. 在載玻片中央滴清水，刮取口腔黏膜後直接蓋上蓋玻片", correct: false, tip: "提示：口腔細胞是動物細胞，滴清水會使細胞滲透吸水膨脹破裂；且染色步驟未執行。" },
+        { text: "B. 滴加一滴生理食鹽水，刮取細胞塗抹後，以 45 度角緩緩放下蓋玻片避免氣泡，再於邊緣滴亞甲藍液染色引流", correct: true, skill: "【標本製備精通】：熟悉等張溶液配置、45度蓋玻片排氣泡術與亞甲藍染色技法。" },
+        { text: "C. 先滴加亞甲藍液將口腔內部漱洗染色，再將牙籤刮下的殘渣塗抹在載玻片上", correct: false, tip: "提示：染劑不可放入口腔中！染色應在載玻片上完成。" },
+        { text: "D. 垂直快速蓋上蓋玻片，若有氣泡只需用力敲擊玻片壓平", correct: false, tip: "提示：垂直蓋下容易包覆大量空氣形成氣泡；敲擊玻片易造成蓋玻片破裂或標本變形。" }
+      ]
+    },
+    {
+      title: "第二關：使用低倍鏡觀察",
+      question: "已將玻片置於載物臺並固定，準備用「低倍鏡」初次尋找細胞視野時，正確的操作流程為何？",
+      options: [
+        { text: "A. 眼睛直視目鏡，直接快速旋轉粗調節輪將載物臺升至最高處", correct: false, tip: "提示：看著目鏡快速上升載物臺，容易導致物鏡撞擊玻片造成鏡頭刮傷或破裂。" },
+        { text: "B. 從側面注視物鏡，先旋轉粗調節輪使載物臺靠近物鏡；再由目鏡觀察，以粗調節輪緩緩反向對焦", correct: true, skill: "【低倍視野鷹眼】：精通物鏡防撞安全操作，並能迅速校準焦距找到細胞群落。" },
+        { text: "C. 為了看清楚，立即將光圈調到最小，並使用細調節輪大幅度升降對焦", correct: false, tip: "提示：光圈太小會使視野過暗；細調節輪升降幅度微小，不適合在初階段用於大範圍尋焦。" },
+        { text: "D. 直接切換至高倍物鏡，藉由旋轉盤直接微調找目標", correct: false, tip: "提示：顯微鏡觀察應遵循「先低倍、後高倍」原則，低倍鏡視野大較容易鎖定目標。" }
+      ]
+    },
+    {
+      title: "第三關：使用高倍鏡觀察",
+      question: "已在低倍鏡下找到清楚的細胞，現在要進一步切換到「高倍鏡」觀察細胞核細部，下列何者正確？",
+      options: [
+        { text: "A. 不用移動目標，直接轉動旋轉盤切到高倍鏡，並快速旋轉粗調節輪對焦", correct: false, tip: "提示：高倍鏡下物鏡極長，嚴禁轉動粗調節輪，極易壓碎玻片！" },
+        { text: "B. 將目標細胞移到視野中央，轉至高倍鏡，適度調大光圈，僅使用「細調節輪」微調焦點", correct: true, skill: "【微觀獵人境界】：精準掌握高倍鏡光線補償，並僅憑細調節輪精確聚焦細胞核。" },
+        { text: "C. 將光圈調至最暗以增加對比度，並把載物臺降到底部重新對焦", correct: false, tip: "提示：高倍鏡視野通常較暗，需要適度放大光圈或調整集光器；重新降到底部會遺失目標。" },
+        { text: "D. 轉動高倍鏡時若鏡頭碰觸到玻片，應大力旋轉將其卡入卡榫", correct: false, tip: "提示：切勿硬轉！若會碰撞代表焦距不對或玻片放置不平，硬轉會毀損高精密物鏡。" }
+      ]
     }
-  </script>
+  ];
+
+  let currentStageIndex = 0;
+  const collectedSkills = [];
+
+  // DOM 元素快取
+  const stageTitleEl = document.getElementById("stage-title");
+  const questionTextEl = document.getElementById("question-text");
+  const optionsContainerEl = document.getElementById("options-container");
+  const feedbackBoxEl = document.getElementById("feedback-box");
+  const nextBtnEl = document.getElementById("next-btn");
+  const progressEl = document.getElementById("progress");
+  const quizSectionEl = document.getElementById("quiz-section");
+  const licenseSectionEl = document.getElementById("license-section");
+  const skillsAcquiredEl = document.getElementById("skills-acquired");
+
+  // 載入關卡
+  function loadStage(index) {
+    const stage = stages[index];
+    stageTitleEl.innerText = stage.title;
+    questionTextEl.innerText = stage.question;
+    optionsContainerEl.innerHTML = "";
+    feedbackBoxEl.style.display = "none";
+    feedbackBoxEl.className = "feedback";
+    nextBtnEl.style.display = "none";
+
+    // 更新進度條
+    const progressPercent = (index / stages.length) * 100;
+    progressEl.style.width = `${progressPercent}%`;
+
+    // 建立選項按鈕
+    stage.options.forEach((opt) => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.innerText = opt.text;
+      btn.onclick = () => handleAnswer(opt, btn);
+      optionsContainerEl.appendChild(btn);
+    });
+  }
+
+  // 處理答題判定
+  function handleAnswer(selectedOption, buttonElement) {
+    feedbackBoxEl.style.display = "block";
+
+    if (selectedOption.correct) {
+      feedbackBoxEl.className = "feedback success";
+      feedbackBoxEl.innerHTML = `<strong>正確！</strong><br>達成技能：${selectedOption.skill}`;
+      
+      // 記錄技能 (避免重複推入)
+      if (!collectedSkills.includes(selectedOption.skill)) {
+        collectedSkills.push(selectedOption.skill);
+      }
+
+      // 鎖定所有選項按鈕
+      const allButtons = optionsContainerEl.querySelectorAll(".option-btn");
+      allButtons.forEach(btn => btn.disabled = true);
+      buttonElement.style.borderColor = "var(--success-color)";
+      buttonElement.style.background = "#eafaf1";
+
+      nextBtnEl.style.display = "block";
+    } else {
+      feedbackBoxEl.className = "feedback error";
+      feedbackBoxEl.innerHTML = `<strong>操作不符合規範！</strong><br>${selectedOption.tip}`;
+      buttonElement.style.borderColor = "var(--error-color)";
+      buttonElement.style.background = "#fde8e8";
+    }
+  }
+
+  // 前往下一關或顯示證書
+  function nextStage() {
+    currentStageIndex++;
+    if (currentStageIndex < stages.length) {
+      loadStage(currentStageIndex);
+    } else {
+      showLicense();
+    }
+  }
+
+  // 顯示獵人執照
+  function showLicense() {
+    progressEl.style.width = "100%";
+    quizSectionEl.style.display = "none";
+    licenseSectionEl.style.display = "block";
+
+    skillsAcquiredEl.innerHTML = "";
+    collectedSkills.forEach(skill => {
+      const li = document.createElement("li");
+      li.innerText = skill;
+      skillsAcquiredEl.appendChild(li);
+    });
+  }
+
+  // 重新遊玩
+  function restartGame() {
+    currentStageIndex = 0;
+    collectedSkills.length = 0;
+    quizSectionEl.style.display = "block";
+    licenseSectionEl.style.display = "none";
+    loadStage(0);
+  }
+
+  // 初始化啟動
+  loadStage(0);
+</script>
 </body>
 </html>
