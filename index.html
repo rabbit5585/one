@@ -1,101 +1,91 @@
-<script>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>獵人執照試驗場</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
     tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    hunter: {
-                        bg: '#0a0d14',
-                        card: '#141a29',
-                        border: '#2a3650',
-                        accent: '#ffcc00',
-                        neon: '#00ffcc',
-                        red: '#ff2a5f',
-                        purple: '#a855f7'
-                    }
-                },
-                fontFamily: {
-                    sans: ['Noto Sans TC', 'sans-serif'],
-                    orbitron: ['Orbitron', 'sans-serif']
-                }
+      theme: {
+        extend: {
+          colors: {
+            hunter: {
+              bg: '#0a0d14',
+              card: '#141a29',
+              border: '#2a3650',
+              accent: '#ffcc00',
+              neon: '#00ffcc',
+              red: '#ff2a5f',
+              purple: '#a855f7'
             }
+          }
         }
+      }
     }
-</script>
- 
-<style>
-    /* Custom Hunter Anime Aesthetics */
+  </script>
+  <style>
     body {
-        background-color: #0a0d14;
-        color: #f3f4f6;
-        font-family: 'Noto Sans TC', sans-serif;
-        background-image: 
-            radial-gradient(circle at 15% 20%, rgba(0, 255, 204, 0.05) 0%, transparent 40%),
-            radial-gradient(circle at 85% 80%, rgba(255, 204, 0, 0.05) 0%, transparent 40%);
-        background-attachment: fixed;
+      background-color: #0a0d14;
+      color: #f3f4f6;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 255, 204, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(255, 204, 0, 0.08) 0%, transparent 40%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
- 
-    /* Large Display Glow Effects */
     .hunter-title-glow {
-        text-shadow: 0 0 15px rgba(255, 204, 0, 0.6), 0 0 30px rgba(255, 204, 0, 0.2);
+      text-shadow: 0 0 15px rgba(255, 204, 0, 0.6), 0 0 30px rgba(255, 204, 0, 0.2);
     }
-    .neon-border {
-        box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
-        border: 2px solid #00ffcc;
-    }
-    .nen-aura-active {
-        animation: nenAuraPulse 2s infinite alternate;
-    }
-    @keyframes nenAuraPulse {
-        0% { box-shadow: 0 0 10px rgba(0, 255, 204, 0.4), inset 0 0 15px rgba(0, 255, 204, 0.2); }
-        100% { box-shadow: 0 0 25px rgba(0, 255, 204, 0.8), inset 0 0 25px rgba(0, 255, 204, 0.4); }
-    }
- 
     .card-hunter-style {
-        background: linear-gradient(135deg, #182232 0%, #0d131f 100%);
-        border: 2px solid #3b4d6c;
-        clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      background: linear-gradient(135deg, #182232 0%, #0d131f 100%);
+      border: 2px solid #3b4d6c;
+      box-shadow: 0 0 25px rgba(0, 255, 204, 0.15);
     }
- 
     .btn-hunter {
-        background: linear-gradient(90deg, #ffcc00 0%, #ff9900 100%);
-        color: #000;
-        font-weight: 900;
-        transition: all 0.2s ease;
-        clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+      background: linear-gradient(90deg, #ffcc00 0%, #ff9900 100%);
+      color: #000;
+      font-weight: 900;
+      transition: all 0.2s ease;
     }
     .btn-hunter:hover {
-        transform: scale(1.03);
-        box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
     }
- 
-    /* Custom Checkbox for Big Screens */
-    .equipment-checkbox:checked + div {
-        border-color: #00ffcc;
-        background-color: rgba(0, 255, 204, 0.15);
-        box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+    .nen-aura-active {
+      animation: nenAuraPulse 2s infinite alternate;
     }
- 
-    /* Hunter Card Specific Styling */
-    .hunter-card-gold {
-        background: linear-gradient(145deg, #2a210d 0%, #120e06 100%);
-        border: 3px solid #ffcc00;
-        box-shadow: 0 0 35px rgba(255, 204, 0, 0.3);
+    @keyframes nenAuraPulse {
+      0% { box-shadow: 0 0 10px rgba(0, 255, 204, 0.4); }
+      100% { box-shadow: 0 0 25px rgba(0, 255, 204, 0.8); }
     }
- 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-    ::-webkit-scrollbar-track {
-        background: #0a0d14;
-    }
-    ::-webkit-scrollbar-thumb {
-        background: #2a3650;
-        border-radius: 5px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: #00ffcc;
-    }
-</style>
- 
+  </style>
+</head>
+<body>
+  <div class="card-hunter-style p-8 rounded-2xl max-w-md w-full text-center border-hunter-border">
+    <h1 class="text-3xl font-black text-hunter-accent mb-2 hunter-title-glow tracking-widest">HUNTER EXAM</h1>
+    <p class="text-gray-400 text-sm mb-6">第 287 期獵人試驗修煉場</p>
+    
+    <div class="bg-[#0a0d14] p-5 rounded-xl border border-gray-800 mb-6 nen-aura-active">
+      <div class="text-gray-400 text-xs mb-1">念能力修煉值 (REN)</div>
+      <div id="power-display" class="text-4xl font-black text-hunter-neon tracking-wider">100</div>
+    </div>
 
+    <button onclick="train()" class="btn-hunter w-full py-4 rounded-xl text-lg mb-3 cursor-pointer">
+      ⚡ 釋放念能力修煉
+    </button>
+  </div>
+
+  <script>
+    let power = 100;
+    function train() {
+      power += 50;
+      document.getElementById('power-display').innerText = power;
+    }
+  </script>
+</body>
+</html>
